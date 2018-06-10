@@ -22,5 +22,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/project/', include('project.urls')),
     #url(r'^api-token-auth/', views.obtain_auth_token),
-    url(r'^api-token-auth/', CustomAuthToken.as_view())
+    url(r'^api-token-auth/', CustomAuthToken.as_view()),
+    url(r'^api/user/', include('user.urls'))
 ]

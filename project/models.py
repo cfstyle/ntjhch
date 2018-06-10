@@ -17,6 +17,23 @@ class Project(models.Model):
     '''
     项目详情
     '''
+    PROJECT_CODE = (
+        (0, '新建的'),
+        (1, '进行中'),
+        (2, '暂停中'),
+        (3, '已结项')
+    )
+    TENDER_CODE = (
+        (0, '未开始'),
+        (1, '进行中'),
+        (2, '已完成')
+    )
+    CONTRACT_CODE = (
+        (0, '未开始'),
+        (1, '进行中'),
+        (2, '已完成')
+    )
+
     id = models.AutoField(primary_key=True)
     create_time = models.DateTimeField('立项时间', auto_now_add=True)
     client = models.CharField('委托单位', max_length=100)
@@ -27,11 +44,14 @@ class Project(models.Model):
     name = models.CharField('项目名称', max_length=100)
     manager = models.ForeignKey(User)
     description = models.TextField('项目描述')
-    project_status = models.CharField('项目状态', max_length=100)
-    tender_status = models.CharField('投标状态', max_length=100)
-    contract_status = models.CharField('合同状态', max_length=100)
+    project_status = models.IntegerField('项目状态', choices=PROJECT_CODE, default=0)
+    tender_status = models.IntegerField('投标状态', choices=TENDER_CODE, default=0)
+    contract_status = models.IntegerField('合同状态', choices=CONTRACT_CODE, default=0)
     end_time = models.DateTimeField('结项时间', blank=True)
     remark = models.CharField('备注', max_length=255, blank=True)
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         verbose_name = '项目详情'
@@ -73,6 +93,9 @@ class ProjectAttachment(models.Model):
     user = models.ForeignKey(User)
     name = models.CharField('附件名', max_length=100)
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         verbose_name = '项目附件'
         verbose_name_plural = '项目附件'
@@ -95,6 +118,9 @@ class ProjectComment(models.Model):
     reply_to = models.IntegerField('回复对象') #为空表示对项目进行评论，不为空表示回复对应的评论ID
     content = models.CharField('评论内容', max_length=300)
     status = models.IntegerField('问题解决状态', choices=PROBLEM_STATUS)
+
+    def __str__(self):
+        return self.content
     
     class Meta:
         verbose_name = '项目评论'
@@ -121,6 +147,7 @@ class Record(models.Model):
     operate_user = models.ForeignKey(User)
     action = models.IntegerField('动作', choices=OPERATE)
 
+
     class Meta:
         verbose_name = '用户操作日志'
         verbose_name_plural = '用户操作日志'
@@ -132,6 +159,9 @@ class WorkType(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField('类型', max_length=100)
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         verbose_name = '任务类型'
         verbose_name_plural = '任务类型'
@@ -142,6 +172,9 @@ class WorkProcess(models.Model):
     '''
     id = models.AutoField(primary_key=True)
     name = models.CharField('环节', max_length=100)
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         verbose_name = '任务环节'
@@ -164,6 +197,9 @@ class WorkAttachment(models.Model):
     user = models.ForeignKey(User)
     name = models.CharField('附件名', max_length=100)
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         verbose_name = '任务附件'
         verbose_name_plural = '任务附件'
@@ -175,6 +211,9 @@ class WorkRole(models.Model):
     '''
     id = models.AutoField(primary_key=True)
     name = models.CharField('角色', max_length=100)
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         verbose_name = '任务角色'
@@ -217,6 +256,9 @@ class Work(models.Model):
     coordinate = models.IntegerField('采用坐标', choices=COORDINATE_TYPE, default=1)
     dimordinate = models.CharField('坐标标注', max_length=30, blank=True)
 
+    def __str__(self):
+        return self.title
+
     class Meta:
         verbose_name = '任务'
         verbose_name_plural = '任务'
@@ -240,7 +282,8 @@ class WorkPerson(models.Model):
     mode = models.IntegerField('作业方式', choices=OPERATION_MODE, default=1)
     remark = models.CharField('备注', max_length=200, blank=True)
 
+
     class Meta:
-        verbose_name = '任务附件'
-        verbose_name_plural = '任务附件'
+        verbose_name = '任务人员分配'
+        verbose_name_plural = '任务人员分配'
         ordering = ['-id']
