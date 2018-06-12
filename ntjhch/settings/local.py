@@ -83,6 +83,7 @@ CORS_ALLOW_HEADERS = (
     'X-URL-PATH' # 前端自定义的，这边要添加 否则会被拒绝
 )
 
+
 ROOT_URLCONF = 'ntjhch.urls'
 
 TEMPLATES = [
@@ -108,8 +109,12 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
-    )
+    ),
+    # pagination
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 10
 }
+
 
 
 # Database

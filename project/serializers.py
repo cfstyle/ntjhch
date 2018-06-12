@@ -21,9 +21,25 @@ class UserSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ProjectSerializer(serializers.ModelSerializer):
+    project_status_name = serializers.SerializerMethodField()
+    tender_status_name = serializers.SerializerMethodField()
+    contract_status_name = serializers.SerializerMethodField()
+    create_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
+    end_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
+    manager_name = serializers.SerializerMethodField()
+
     class Meta:
         model = Project
         fields = '__all__'
+
+    def get_project_status_name(self, obj):
+        return obj.get_project_status_display()
+    def get_tender_status_name(self, obj):
+        return obj.get_tender_status_display()
+    def get_contract_status_name(self, obj):
+        return obj.get_contract_status_display()
+    def get_manager_name(self, obj):
+        return obj.manager.username
 
 class ProjectApprovalSerializer(serializers.ModelSerializer):
     class Meta:
