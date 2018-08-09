@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 import traceback
 # Create your views here.
 
@@ -39,3 +41,24 @@ def user_logout(request):
         traceback.print_exc()
         rs['msg'] = 'logout exception!'
     return JsonResponse(rs)
+
+@api_view(['GET'])
+def get_users(request):
+    '''
+    获取除admin的所有用户
+    '''
+    rs = {
+        'code': 200,
+        'msg': ''
+    }
+    try:
+        
+        users = User.objects.filter(is_superuser=0)
+        rs['users'] = map(lambda x: {
+                'id': x.id,
+                'username': x.username
+            }, users)
+    except:
+        traceback.print_exc()
+        rs['msg'] = 'get users faild.'
+    return Response(rs)

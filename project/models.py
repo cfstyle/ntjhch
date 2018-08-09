@@ -47,7 +47,7 @@ class Project(models.Model):
     project_status = models.IntegerField('项目状态', choices=PROJECT_CODE, default=0)
     tender_status = models.IntegerField('投标状态', choices=TENDER_CODE, default=0)
     contract_status = models.IntegerField('合同状态', choices=CONTRACT_CODE, default=0)
-    end_time = models.DateTimeField('结项时间', blank=True)
+    end_time = models.DateTimeField('结项时间', blank=True, null=True)
     remark = models.CharField('备注', max_length=255, blank=True)
 
     def __str__(self):
