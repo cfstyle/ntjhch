@@ -1,11 +1,14 @@
+#coding=utf-8
 from django.shortcuts import render
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 import traceback
 # Create your views here.
+from django.conf import settings
+
 
 def user_login(request):
     '''
@@ -20,10 +23,10 @@ def user_login(request):
     user = authenticate(request, username=username, password=password)
     if user is not None:
         login(request, user)
-        rs['msg'] = '登录成功'
+        rs['msg'] = u'登录成功'
     else:
         rs['code'] = 204
-        rs['msg'] = '用户名或密码错误！'
+        rs['msg'] = u'用户名或密码错误！'
     return JsonResponse(rs)
 
 def user_logout(request):
@@ -56,7 +59,11 @@ def get_users(request):
         users = User.objects.filter(is_superuser=0)
         rs['users'] = map(lambda x: {
                 'id': x.id,
-                'username': x.username
+                'username': x.get_username(),
+                'realname': x.last_name + x.first_name,
+                # 'realname': x.get_full_name(),
+                'groups': x.groups.values_list('name', flat=True),
+                'role': min([settings.ROLE.get(each, 999) for each in x.groups.values_list('name', flat=True)])
             }, users)
     except:
         traceback.print_exc()

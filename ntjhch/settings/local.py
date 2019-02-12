@@ -60,6 +60,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ORIGIN_WHITELIST = ()
 
 CORS_ALLOW_METHODS = (
+    'UPDATE',
     'DELETE',
     'GET',
     'OPTIONS',
@@ -107,8 +108,9 @@ WSGI_APPLICATION = 'ntjhch.wsgi.application'
 # rest framework configuration
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework.authentication.BasicAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
     ),
     # pagination
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
@@ -135,7 +137,7 @@ DATABASES = {
         'HOST':'localhost',
         'PORT':'3306',
         'USER':'root',
-        'PASSWORD':'ffcc',
+        'PASSWORD':'chenfei123456',
         'OPTIONS': {
             'init_command': "set sql_mode='STRICT_TRANS_TABLES'"
         }
@@ -179,3 +181,9 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# 文件上传目录
+FILE_UPLOAD_PATH = os.path.dirname(os.path.join(BASE_DIR, 'upload/project_attachments/').replace('\\', '/'))

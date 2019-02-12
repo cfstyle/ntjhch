@@ -6,3 +6,8 @@ try:
     from .local import *
 except:
     pass
+
+try:
+    from .config import *
+except:
+    pass

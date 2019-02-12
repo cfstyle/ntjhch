@@ -17,11 +17,14 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from rest_framework.authtoken import views
 from .authtoken import CustomAuthToken
+from django.views.static import serve
+from settings import MEDIA_ROOT
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/project/', include('project.urls')),
     #url(r'^api-token-auth/', views.obtain_auth_token),
     url(r'^api-token-auth/', CustomAuthToken.as_view()),
-    url(r'^api/user/', include('user.urls'))
+    url(r'^api/user/', include('user.urls')),
+    url(r'^media/(?P<path>.*)$', serve, {"document_root":MEDIA_ROOT})
 ]

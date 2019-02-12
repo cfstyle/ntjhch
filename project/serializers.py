@@ -39,7 +39,7 @@ class ProjectSerializer(serializers.ModelSerializer):
     def get_contract_status_name(self, obj):
         return obj.get_contract_status_display()
     def get_manager_name(self, obj):
-        return obj.manager.username
+        return obj.manager.last_name + obj.manager.first_name
 
 class ProjectApprovalSerializer(serializers.ModelSerializer):
     class Meta:
