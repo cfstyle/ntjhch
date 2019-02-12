@@ -1,3 +1,4 @@
+#coding=utf-8
 """ntjhch URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -14,18 +15,19 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url, include
-from django.contrib import admin
-from rest_framework.authtoken import views
-from .authtoken import CustomAuthToken
-from django.views.static import serve
-from ntjhch.settings import MEDIA_ROOT
+#from rest_framework import router
+from rest_framework.routers import DefaultRouter 
+from filemanage.views import (
+        FileViewSet
+    )
+
+#router = routers.SimpleRouter()
+router = DefaultRouter()
+router.register(r'file', FileViewSet)                                  # 文件
+
+#urlpatterns = router.urls
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^api/project/', include('project.urls')),
-    url(r'^api/fm/', include('filemanage.urls')),
-    #url(r'^api-token-auth/', views.obtain_auth_token),
-    url(r'^api-token-auth/', CustomAuthToken.as_view()),
-    url(r'^api/user/', include('user.urls')),
-    url(r'^media/(?P<path>.*)$', serve, {"document_root":MEDIA_ROOT})
+    url(r'', include(router.urls))
+    # url(r'^api/project/', include('project.urls')),
 ]

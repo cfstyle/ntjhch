@@ -32,8 +32,6 @@ from project.serializers import (
         WorkSerializer,
         WorkPersonSerializer
     )
-import os
-from ntjhch.settings import FILE_UPLOAD_PATH
 # Create your views here.
 
 class UserViewSet(viewsets.ModelViewSet):

@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken', # TokenAuthentication
     'project',
+    'filemanage'
 ]
 
 MIDDLEWARE = [
@@ -137,7 +138,7 @@ DATABASES = {
         'HOST':'localhost',
         'PORT':'3306',
         'USER':'root',
-        'PASSWORD':'chenfei123456',
+        'PASSWORD':'ffcc',
         'OPTIONS': {
             'init_command': "set sql_mode='STRICT_TRANS_TABLES'"
         }
